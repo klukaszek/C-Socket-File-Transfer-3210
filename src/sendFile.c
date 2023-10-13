@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     struct timespec start_time, completion_time;
 
     // Get the start time (use CLOCK_MONOTONIC to avoid issues with system time changes)
-    clock_gettime(CLOCK_MONOTONIC, &start_time);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start_time);
 
     // Send the filename and file data to the server
     sendFile(client_socket, filename, buf_size);
