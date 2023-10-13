@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 # CIS 3210 - Assignment 1
 # Author: Kyle Lukaszek
 # ID: 1113798

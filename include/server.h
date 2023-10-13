@@ -1,3 +1,8 @@
+// CIS 3210 - Assignment 1
+// Author: Kyle Lukaszek
+// ID: 1113798
+// Due: October 13, 2023
+
 #include <stdio.h>
 #include <errno.h>
 #include <ctype.h>
@@ -10,21 +15,9 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
-
-#define endof(string) (strlen(string) + 1)
  
 #define MAXRCVLEN 500
 #define MAX_FILENAME_LEN 256
-
-// Used to store timing information from the server
-typedef struct
-{
-    time_t start_sec;
-    long start_nsec;
-
-    time_t end_sec;
-    long end_nsec;
-} TimingInfo;
 
 // Function that will be called when SIG_INT is caught so we can close the sockets and exit gracefully
 static void sigintCatcher(int signal,  siginfo_t* si, void *arg);

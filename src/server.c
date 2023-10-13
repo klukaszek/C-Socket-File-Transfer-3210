@@ -1,3 +1,8 @@
+// CIS 3210 - Assignment 1
+// Author: Kyle Lukaszek
+// ID: 1113798
+// Due: October 13, 2023
+
 #include "../include/server.h"
 
 int my_socket;            // socket used to listen for incoming connections
@@ -123,16 +128,12 @@ int main(int argc, char *argv[])
 		// Get the current time (use CLOCK_MONOTONIC to avoid issues with time changes)
 		clock_gettime(CLOCK_MONOTONIC, &end_time);
 
-		// Define TimingInfo struct to send to client
-		TimingInfo timing_info;
-		timing_info.start_sec = start_time.tv_sec;
-		timing_info.start_nsec = start_time.tv_nsec;
-		timing_info.end_sec = end_time.tv_sec;
-		timing_info.end_nsec = end_time.tv_nsec;
+   		// Calculate the total time in seconds from connection to completion
+    	double total_time_sec = (double)(end_time.tv_sec - start_time.tv_sec) + (double)(end_time.tv_nsec - start_time.tv_nsec) / 1000000000;
 
-		// Send the timing information to the client
-		if (send(con_socket, &timing_info, sizeof(TimingInfo), 0) == -1) {
-			perror("Failed to send timing information");
+		// Send the total time to the client
+		if (send(con_socket, &total_time_sec, sizeof(double), 0) == -1) {
+			perror("Failed to send total time to client");
 			return EXIT_FAILURE;
 		}
 		

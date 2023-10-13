@@ -1,3 +1,8 @@
+// CIS 3210 - Assignment 1
+// Author: Kyle Lukaszek
+// ID: 1113798
+// Due: October 13, 2023
+
 #include "../include/sendFile.h"
 
 #include <stdio.h>
@@ -69,10 +74,9 @@ int main(int argc, char *argv[])
     // Send the filename and file data to the server
     sendFile(client_socket, filename, buf_size);
 
-    struct timespec start_time, end_time;
-    TimingInfo timing_info;
-
-    if (recv(client_socket, &timing_info, sizeof(TimingInfo), 0) == -1) {
+    // Receive the total time (in seconds) from the server
+    double total_time_sec = 0;
+    if (recv(client_socket, &total_time_sec, sizeof(double), 0) == -1) {
         perror("Failed to receive timing info from server");
         return -1;
     }
@@ -80,16 +84,7 @@ int main(int argc, char *argv[])
     // Close the socket
     close(client_socket);
 
-    // Set the start time struct
-    start_time.tv_sec = timing_info.start_sec;
-    start_time.tv_nsec = timing_info.start_nsec;
-
-    // Set the end time struct
-    end_time.tv_sec = timing_info.end_sec;
-    end_time.tv_nsec = timing_info.end_nsec;
-
-    // Calculate the total time in seconds and milliseconds
-    double total_time_sec = (double)(end_time.tv_sec - start_time.tv_sec) + (double)(end_time.tv_nsec - start_time.tv_nsec) / 1000000000;
+    // Calculate the total time in milliseconds
     double total_time_ms = total_time_sec * 1000;
 
     // Get the file size

@@ -1,3 +1,8 @@
+# CIS 3210 - Assignment 1
+# Author: Kyle Lukaszek
+# ID: 1113798
+# Due: October 13, 2023
+
 # Compiler and flags
 CC = gcc
 CFLAGS = -Wall -Wextra -pedantic -Iinclude
