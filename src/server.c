@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 		struct timespec completionTime;
 
 		// Get the current time (use CLOCK_MONOTONIC to avoid issues with time changes)
-		clock_gettime(CLOCK_MONOTONIC_RAW, &completionTime);
+		clock_gettime(CLOCK_REALTIME, &completionTime);
 
 		// Send tv_sec
 		if (send(con_socket, &completionTime.tv_sec, sizeof(time_t), 0) == -1) {
