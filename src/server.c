@@ -180,12 +180,8 @@ int receiveFile(int socket, int size)
 	// Null terminate the filename
 	filename[filename_len] = '\0';
 
-	// REMOVE THIS LATER
-	char dir[256] = "files/";
-	strcat(dir, filename);
-
     // Open the file for writing
-    file = fopen(dir, "wb");
+    file = fopen(filename, "wb");
     if (file == NULL) {
         perror("\tFailed to create file");
         return -1;
