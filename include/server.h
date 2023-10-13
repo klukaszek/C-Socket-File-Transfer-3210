@@ -16,6 +16,16 @@
 #define MAXRCVLEN 500
 #define MAX_FILENAME_LEN 256
 
+// Used to store timing information from the server
+typedef struct
+{
+    time_t start_sec;
+    long start_nsec;
+
+    time_t end_sec;
+    long end_nsec;
+} TimingInfo;
+
 // Function that will be called when SIG_INT is caught so we can close the sockets and exit gracefully
 static void sigintCatcher(int signal,  siginfo_t* si, void *arg);
 

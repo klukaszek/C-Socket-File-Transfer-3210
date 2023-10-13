@@ -66,37 +66,30 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    struct timespec start_time, completion_time;
-
-    // Get the start time (use CLOCK_MONOTONIC to avoid issues with system time changes)
-    clock_gettime(CLOCK_REALTIME, &start_time);
-
     // Send the filename and file data to the server
     sendFile(client_socket, filename, buf_size);
 
-    // Get the completion time from the server
-    time_t tv_sec;
-    long tv_nsec;
+    struct timespec start_time, end_time;
+    TimingInfo timing_info;
 
-    if (recv(client_socket, &tv_sec, sizeof(time_t), 0) == -1) {
-        perror("Failed to receive completion time");
-        return -1;
-    }
-
-    if (recv(client_socket, &tv_nsec, sizeof(long), 0) == -1) {
-        perror("Failed to receive completion time");
+    if (recv(client_socket, &timing_info, sizeof(TimingInfo), 0) == -1) {
+        perror("Failed to receive timing info from server");
         return -1;
     }
 
     // Close the socket
     close(client_socket);
 
-    // Set the completion time struct
-    completion_time.tv_sec = tv_sec;
-    completion_time.tv_nsec = tv_nsec;
+    // Set the start time struct
+    start_time.tv_sec = timing_info.start_sec;
+    start_time.tv_nsec = timing_info.start_nsec;
+
+    // Set the end time struct
+    end_time.tv_sec = timing_info.end_sec;
+    end_time.tv_nsec = timing_info.end_nsec;
 
     // Calculate the total time in seconds and milliseconds
-    double total_time_sec = (double)(completion_time.tv_sec - start_time.tv_sec) + (double)(completion_time.tv_nsec - start_time.tv_nsec) / 1000000000;
+    double total_time_sec = (double)(end_time.tv_sec - start_time.tv_sec) + (double)(end_time.tv_nsec - start_time.tv_nsec) / 1000000000;
     double total_time_ms = total_time_sec * 1000;
 
     // Get the file size

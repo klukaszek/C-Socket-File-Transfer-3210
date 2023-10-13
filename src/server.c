@@ -102,6 +102,12 @@ int main(int argc, char *argv[])
   
 	while(con_socket)
 	{
+		// Send the completion time to the client
+		struct timespec start_time, end_time;
+
+		// Get the start time (use CLOCK_MONOTONIC to avoid issues with time changes)
+		clock_gettime(CLOCK_MONOTONIC, &start_time);
+
 		//dest contains information - IP address, port number, etc. - in network byte order
 		//We need to convert it to host byte order before displaying it
 		printf("Incoming connection from %s on port %d\n", inet_ntoa(dest.sin_addr), ntohs(dest.sin_port));
@@ -114,21 +120,19 @@ int main(int argc, char *argv[])
 			printf("Error receiving file from %s on port %d\n", inet_ntoa(dest.sin_addr), ntohs(dest.sin_port));
 		}
 
-		// Send the completion time to the client
-		struct timespec completionTime;
-
 		// Get the current time (use CLOCK_MONOTONIC to avoid issues with time changes)
-		clock_gettime(CLOCK_REALTIME, &completionTime);
+		clock_gettime(CLOCK_MONOTONIC, &end_time);
 
-		// Send tv_sec
-		if (send(con_socket, &completionTime.tv_sec, sizeof(time_t), 0) == -1) {
-			perror("Failed to send completion time (sec)");
-			return EXIT_FAILURE;
-		}
+		// Define TimingInfo struct to send to client
+		TimingInfo timing_info;
+		timing_info.start_sec = start_time.tv_sec;
+		timing_info.start_nsec = start_time.tv_nsec;
+		timing_info.end_sec = end_time.tv_sec;
+		timing_info.end_nsec = end_time.tv_nsec;
 
-		// Send tv_nsec
-		if (send(con_socket, &completionTime.tv_nsec, sizeof(long), 0) == -1) {
-			perror("Failed to send completion time (nsec)");
+		// Send the timing information to the client
+		if (send(con_socket, &timing_info, sizeof(TimingInfo), 0) == -1) {
+			perror("Failed to send timing information");
 			return EXIT_FAILURE;
 		}
 		
