@@ -5,13 +5,15 @@
 # ID: 1113798
 # Due: 10-13-2023
 
+# This script spawns a number of clients to send a file to a server and then reports the min, max, and average times and throughputs.
+# Usage: python environment_test.py filename server-IP:port num_clients optional:bufsize
+
+# Note 1: The clients are being run sequentially for the test. 
+# Note 2: If you want to test the server handling multiple clients at once, then use the spawn_clients.py script.
+
 import re
 import sys
 import subprocess
-
-# This script spawns a number of clients to send a file to a server and then reports the min, max, and average times and throughputs.
-# Note: The clients are being run sequentially for the test. 
-# Note 2: If you want to test the server handling multiple clients at once, then use the spawn_clients.py script.
 
 def spawn_client(filename, server_address, bufsize=-1, output_data=None):
 
@@ -54,7 +56,7 @@ def main():
     """
 
     if len(sys.argv) < 4:
-        print("Usage: python spawn_clients.py filename server-IP:port num_clients optional:bufsize")
+        print("Usage: python environment_test.py filename server-IP:port num_clients optional:bufsize")
         sys.exit(1)
 
     filename = sys.argv[1]
