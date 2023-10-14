@@ -99,8 +99,8 @@ int main(int argc, char *argv[])
 		return 0;
 	}
 
-	// start listening, allowing a queue of up to 1 pending connection
-	listen(my_socket, 0);
+	// start listening, allowing a queue of up to 20 pending connection
+	listen(my_socket, 20);
 	
 	// Create a socket to communicate with the client that just connected
 	con_socket = accept(my_socket, (struct sockaddr *)&dest, &socksize);
