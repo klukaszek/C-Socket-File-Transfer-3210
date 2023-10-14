@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 	}
 
 	// start listening, allowing a queue of up to 1 pending connection
-	listen(my_socket, 0);
+	listen(my_socket, 20);
 	
 	// Create a socket to communicate with the client that just connected
 	con_socket = accept(my_socket, (struct sockaddr *)&dest, &socksize);
@@ -185,8 +185,16 @@ int receiveFile(int socket, int size)
 	// Null terminate the filename
 	filename[filename_len] = '\0';
 
+	// Create the directory to store the received files if it doesn't already exist
+	if (mkdir("received_files", 0777) == -1 && errno != EEXIST) {
+		perror("\tFailed to create directory");
+		return -1;
+	}
+	char dir[512] = "received_files/";
+	strcat(dir, filename);
+
     // Open the file for writing
-    file = fopen(filename, "wb");
+    file = fopen(dir, "wb");
     if (file == NULL) {
         perror("\tFailed to create file");
         return -1;

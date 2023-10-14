@@ -15,6 +15,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
  
 #define MAXRCVLEN 500
 #define MAX_FILENAME_LEN 256

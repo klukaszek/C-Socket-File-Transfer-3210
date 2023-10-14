@@ -136,6 +136,7 @@ void sendFile(int client_socket, const char *filename, int buf_size)
     char buffer[buf_size];
     while (!feof(file)) {
         int bytesRead = fread(buffer, 1, buf_size, file);
+        if (bytesRead == 0) break;
         send(client_socket, buffer, bytesRead, 0);
     }
 
