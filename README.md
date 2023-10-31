@@ -1,8 +1,10 @@
 # CIS 3210 Networks - Assignment 1
 
-## Author: Kyle Lukaszek
-## ID: 1113798
-## Due: October 3rd, 2023
+Author: Kyle Lukaszek
+ID: 1113798
+Due: October 3rd, 2023
+
+## Final Grade: 100%
 
 ### Description
 
